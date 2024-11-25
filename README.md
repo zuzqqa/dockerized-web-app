@@ -19,8 +19,8 @@ This project contains a Dockerized setup for a web application consisting of a *
 1. Clone this repository:
 
    ```bash
-   git clone https://your-repository-url.git
-   cd your-project-directory
+   git clone https://github.com/zuzqqa/dockerized-web-app.git
+   cd dockerized-web-app
    ```
 
 2. Build and start the services using Docker Compose:
