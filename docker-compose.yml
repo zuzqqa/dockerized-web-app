@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  # Backend service configuration
+  backend:
+    build:
+      context: . # Current directory as build context
+      dockerfile: backend.Dockerfile # Dockerfile for backend service
+    ports:
+      - "8080:8080" # Map port 8080 from container to host
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://backend:8080/sample"] # Healthcheck command
+      interval: 30s
+      retries: 3
+    networks:
+      - app-network # Network to connect to
+
+  frontend:
+    # Frontend service configuration
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf # Custom Apache config
+      - ./conf/vhosts:/usr/local/apache2/conf/vhosts # Virtual hosts configuration
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/sample"] # Check if frontend is running
+      interval: 30s
+      retries: 3
+    networks:
+      - app-network # Attach to the 'app-network'
+
+# Network configuration
+networks:
+  app-network:
+    driver: bridge # Use Docker's default bridge network driver
